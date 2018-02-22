@@ -11,7 +11,7 @@
     <div class="row">
       <div class="title">本金</div>
       <div class="content">
-        <input type="text" class="principal" id="principal" value="50000">
+        <input type="number" class="principal" id="principal" value="50000">
       </div>
     </div>
     <div class="row">
@@ -22,7 +22,7 @@
         </select>
       </div>
       <div class="content">
-        <input type="text" class="interest" id="interest" value="1.26">
+        <input type="number" class="interest" id="interest" value="1.26">
       </div>
     </div>
     <div class="row">
@@ -114,7 +114,14 @@
      * @return {Array}            集合返回值
      */
     function calc2(principal, interest, result, count) {
+      var i = Number((interest / 0.01 / 365 * principal / 1e4).toFixed(2))
+      var p = Number((principal + i).toFixed(2))
+      result.push({
+        p,
+        i
+      })
 
+      return --count ? calc2(p, interest, result, count) : result
     }
   </script>
 </body>
