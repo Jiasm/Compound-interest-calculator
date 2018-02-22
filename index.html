@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>复利计算器</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="title">本金</div>
+      <div class="content">
+        <input type="text" class="principal" id="principal" value="50000">
+      </div>
+    </div>
+    <div class="row">
+      <div class="title">
+        <select name="type" id="type">
+          <option value="0">万份收益</option>
+          <option value="1">七日年化率</option>
+        </select>
+      </div>
+      <div class="content">
+        <input type="text" class="interest" id="interest" value="1.26">
+      </div>
+    </div>
+    <div class="row">
+      <div class="content">
+        <button class="calculator" id="calculator">计算</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="title">利率计算</div>
+      <div class="content">
+        <table class="result" id="result">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>总款</th>
+              <th>利息</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    window.addEventListener('load', function () {
+      // bind events
+      document.querySelector('#calculator').addEventListener('click', function () {
+        // 计算的周期
+        var count = 365
+        var principal = Number(document.querySelector('#principal').value)
+        var type = Number(document.querySelector('#type').value)
+        var interest = Number(document.querySelector('#interest').value)
+        var result = []
+
+        // 万份收益
+        if (type === 0) {
+          result = calc1(principal, interest, [], count)
+        } else { // 7日年化率
+          result = calc2(principal, interest, [], count)
+        }
+
+        // 渲染至表格
+        var str = ''
+        result.forEach(function (item, index) {
+          str += '<tr>'
+          str += '<td>'
+          str += (index + 1)
+          str += '</td>'
+          str += '<td>'
+          str += item.p
+          str += '</td>'
+          str += '<td>'
+          str += item.i
+          str += '</td>'
+          str += '</tr>'
+        })
+
+        document.querySelector('#result tbody').innerHTML = str
+      })
+    })
+
+    /**
+     * 万份收益
+     * @param  {Number} principal 本金
+     * @param  {Number} interest  每日利息
+     * @param  {Array}  result    初始化的结果集
+     * @param  {Number} count     循环的次数
+     * @return {Array}            集合返回值
+     */
+    function calc1(principal, interest, result, count) {
+      var i = Number((interest / 1e4 * principal).toFixed(2))
+      var p = Number((principal + i).toFixed(2))
+      result.push({
+        p,
+        i
+      })
+
+      return --count ? calc1(p, interest, result, count) : result
+    }
+
+    /**
+     * 7日年化率
+     * @param  {Number} principal 本金
+     * @param  {Number} interest  每日利息
+     * @param  {Array}  result    初始化的结果集
+     * @param  {Number} count     循环的次数
+     * @return {Array}            集合返回值
+     */
+    function calc2(principal, interest, result, count) {
+
+    }
+  </script>
+</body>
+
+</html>
